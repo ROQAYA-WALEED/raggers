@@ -31,7 +31,7 @@ def run_ingestion(is_markdown: bool = True, model_name: str = "text-embedding-3-
 
     print("Embedding chunks...")
     texts = [c["text"] for c in chunks]
-    embeddings = embedder.embed_documents(texts, model_name=model_name)
+    embeddings = embedder.embed_documents(texts)
 
     print("Storing in ChromaDB...")
     vector_store.add_chunks(chunks, embeddings)
