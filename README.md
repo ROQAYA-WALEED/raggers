@@ -2,16 +2,17 @@
 
 A lightweight, local Retrieval-Augmented Generation (RAG) system built to parse, index, and answer queries over custom medical documents using local embeddings and a local LLM.
 
----
+## 🤖 Models Used
 
-## 📌 Features
+- **Embedding Model:** `BAAI/bge-small-en-v1.5` *(via FastEmbed — runs locally without API keys)*
+- **LLM (Large Language Model):** `medllama2:latest` *(via Ollama — local open-source medical LLM)*
 
-- **Document Parsing:** Automatically reads and extracts content from `.txt`, `.md`, and `.pdf` files.
-- **Local Text Chunking:** Breaks long documents into structured chunks with preserved page-level metadata using LlamaIndex.
-- **Vector Search:** Persists document embeddings locally using ChromaDB for fast semantic search.
-- **API & Web Interface:** Includes a FastAPI backend (`api/`) and a Streamlit UI (`app.py`) for multi-turn chat interactions with document citations.
+## Data used 
+- Guidelines for the treatment of malaria by World Health Organization
 
----
+## Evaluation 
+- bad
+- got 2 correct out of 30
 
 ## 🛠️ Setup & Installation
 
@@ -94,15 +95,5 @@ hackathon_rag/
 
 ---
 
-## 🤖 Models Used
 
-- **Embedding Model:** `BAAI/bge-small-en-v1.5` *(via FastEmbed — runs locally without API keys)*
-- **LLM (Large Language Model):** `medllama2:latest` *(via Ollama — local open-source medical LLM)*
-
-## Data used 
-- Guidelines for the treatment of malaria by World Health Organization
-
-## Evaluation 
-- bad
-- got 2 correct out of 30
   
