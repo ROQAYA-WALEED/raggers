@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "recommendation": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "string"
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "document",
+          "section",
+          "page"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "insufficient"
+      ]
+    }
+  },
+  "required": [
+    "recommendation",
+    "evidence",
+    "citations",
+    "confidence"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "confidence": {
+            "const": "insufficient"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "const": ""
+          },
+          "citations": {
+            "maxItems": 0
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "evidence": {
+            "minLength": 1
+          },
+          "citations": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}
