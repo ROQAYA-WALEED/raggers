@@ -1,4 +1,4 @@
-# Hackathon RAG - Medical Document Assistant
+# Hackathon RAG - Version 01
 
 A lightweight, local Retrieval-Augmented Generation (RAG) system built to parse, index, and answer queries over custom medical documents using local embeddings and a local LLM.
 
