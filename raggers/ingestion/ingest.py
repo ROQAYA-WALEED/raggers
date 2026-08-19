@@ -1,6 +1,6 @@
 from .parser import parse_pdf_to_markdown
 from .chunker import chunk_markdown
-from .embedder import get_embedding_model
+from embeddings.embedder import get_embedding_model
 from vectorstore.chroma.chroma_store import ChromaStore
 import yaml
 
