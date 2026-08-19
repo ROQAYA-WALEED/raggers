@@ -1,0 +1,10 @@
+pymupdf4llm
+llama-index
+sentence-transformers
+chromadb
+rank-bm25
+fastapi
+uvicorn
+pydantic
+pyyaml
+openai  # if using OpenAI; else remove
