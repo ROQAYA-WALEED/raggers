@@ -1,15 +1,25 @@
-"""
-main.py
--------
-FastAPI entrypoint. Run with:
-    uvicorn src.main:app --reload
+# src/api/main.py
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from rag_pipeline import run_rag_pipeline
 
-This is the "backend" version of the chatbot (used if you want an HTTP API
-instead of / alongside the Streamlit UI in app.py).
-"""
+app = FastAPI(title="Medical RAG API")
 
-from fastapi import FastAPI
-from src.api.routes import router
 
-app = FastAPI(title="AutoEngineer RAG Chatbot")
-app.include_router(router)
+class QueryRequest(BaseModel):
+    question: str
+
+
+class QueryResponse(BaseModel):
+    question: str
+    answer: str 
+    sources: list[dict]
+
+# Flutter App: Makes an HTTP POST request to http://<YOUR_SERVER_IP>:8000/api/v1/query with body {"question": "What is the primary vector for malaria?"}
+@app.post("/api/v1/query", response_model=QueryResponse)
+def handle_query(request: QueryRequest):
+    if not request.question.strip():
+        raise HTTPException(status_code=400, detail="Question cannot be empty.")
+
+    result = run_rag_pipeline(request.question)
+    return result
