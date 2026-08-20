@@ -1,10 +1,11 @@
 # src/api/main.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from rag_pipeline import run_rag_pipeline
+from src.rag_pipeline import run_rag_pipeline, initialize_pipeline
 
 app = FastAPI(title="Medical RAG API")
 
+initialize_pipeline(force_reingest=True)  # Ensure vector store is ready on startup
 
 class QueryRequest(BaseModel):
     question: str
@@ -14,6 +15,12 @@ class QueryResponse(BaseModel):
     question: str
     answer: str 
     sources: list[dict]
+
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
 
 # Flutter App: Makes an HTTP POST request to http://<YOUR_SERVER_IP>:8000/api/v1/query with body {"question": "What is the primary vector for malaria?"}
 @app.post("/api/v1/query", response_model=QueryResponse)

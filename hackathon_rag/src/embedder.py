@@ -8,20 +8,21 @@ and local paths based on project configuration.
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_ollama import OllamaEmbeddings
 from src import config
+from src.config import OLLAMA_LOCALHOST
 
 
 class Embedder:
     """Dynamically loads and manages vector embedding models across different backends."""
 
     def __init__(self):
-        if getattr(config, "OLLAMA", False):
+        if getattr(config, "OLLAMA_EMBEDDING", False):
             print(f"⚙️ Initializing Ollama Embeddings model: {config.EMBEDDING_MODEL}")
             self.model = OllamaEmbeddings(
                 model=config.EMBEDDING_MODEL,
-                base_url=getattr(config, "OLLAMA_BASE_URL", "http://localhost:11434"),
+                base_url=getattr(config, "OLLAMA_BASE_URL", OLLAMA_LOCALHOST),
             )
 
-        elif getattr(config, "HUGGINGFACE", True):
+        elif getattr(config, "HUGGINGFACE_EMBEDDING", True):
             print(f"⚙️ Initializing Hugging Face Embeddings model: {config.EMBEDDING_MODEL}")
             self.model = HuggingFaceEmbeddings(
                 model_name=config.EMBEDDING_MODEL,

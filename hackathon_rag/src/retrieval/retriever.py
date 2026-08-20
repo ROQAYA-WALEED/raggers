@@ -7,6 +7,7 @@ chunks from the vector store.
 
 from src.embedder import embedder
 from src.vectorstore.vector_store import vector_store
+from src.config import RELEVANCE_THRESHOLD
 from src import config
 
 
@@ -58,3 +59,50 @@ def retrieve_cosine_similarity(query: str, top_k: int = config.TOP_K) -> list[di
     # Sort descending by cosine similarity score
     formatted_results.sort(key=lambda x: x["similarity"], reverse=True)
     return formatted_results
+
+
+
+def filter_retrieved_context(
+    query: str, threshold: float = RELEVANCE_THRESHOLD, top_k: int = 3
+) -> tuple[str, list[dict]]:
+    """Retrieves chunks using retrieve_cosine_similarity and filters them based on a similarity threshold.
+
+    Returns:
+        tuple[str, list[dict]]: (context_str, evidence_chunks)
+            - If no chunks pass the threshold, returns ("", [])
+    """
+    # 1. Retrieve ranked results with similarity scores from retriever module
+    raw_results = retrieve_cosine_similarity(query, top_k=top_k)
+
+    valid_chunks = []
+    if raw_results:
+        for item in raw_results:
+            # Extract similarity score calculated by retrieve_cosine_similarity
+            similarity_score = item.get(
+                "similarity", item.get("score", item.get("cosine_similarity", 0.0))
+            )
+
+            if similarity_score >= threshold:
+                text = (
+                    item.get("text")
+                    or item.get("document")
+                    or item.get("page_content", "")
+                )
+                metadata = item.get("metadata", {})
+
+                valid_chunks.append(
+                    {
+                        "text": text,
+                        "page": metadata.get("page", "N/A"),
+                        "section": metadata.get("section", "N/A"),
+                        "similarity": similarity_score,
+                    }
+                )
+
+    # 2. Return empty structures if no chunk meets the threshold
+    if not valid_chunks:
+        return "", []
+
+    # 3. Join valid context texts and return
+    context_str = "\n\n".join([chunk["text"] for chunk in valid_chunks])
+    return context_str, valid_chunks
