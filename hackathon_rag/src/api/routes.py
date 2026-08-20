@@ -30,3 +30,4 @@ def chat(request: ChatRequest):
 
     sources = [SourceChunk(text=c["text"], source=c["source"]) for c in chunks]
     return ChatResponse(answer=answer, sources=sources)
+
