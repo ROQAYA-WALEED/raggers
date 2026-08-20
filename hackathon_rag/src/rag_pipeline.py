@@ -75,7 +75,7 @@ if __name__ == "__main__":
     # Ensure vector store is ingested before testing query execution
     initialize_pipeline(force_reingest=True)
 
-    sample_query = "how to treat malaria?"
+    sample_query = "how to avoid getting malaria ?"
     result = run_rag_pipeline(sample_query)
 
     print(json.dumps(result, indent=2))

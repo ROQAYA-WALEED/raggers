@@ -449,19 +449,19 @@ def generate_answer(
 
 
 if __name__ == "__main__":
-    # Test sample call
-    test_context = """Patients co-infected with HIV
-    In people who have HIV/AIDS and uncomplicated P. falciparum malaria, avoid
-    artesunate + SP if they are being treated with co-trimoxazole, and avoid
-    artesunate + amodiaquine if they are being treated with efavirenz or zidovudine.
-    Good practice statement"""
-    test_chunks = [
-        {"text": test_context, "page": 13, "section": "recommendations"}
-    ]
-    test_query = (
-        "Which five artemisinin-based combination therapies (ACTs) are"
-        " recommended for treating uncomplicated P. falciparum?"
-    )
+    test_context = """Intermittent preventive treatment in infants (IPTi)
+    In areas of moderate-to-high malaria transmission in sub-Saharan Africa, 
+    intermittent preventive treatment in infants (IPTi) with sulfadoxine-pyrimethamine 
+    (SP) is recommended for infants at risk of severe malaria. SP should be given at 
+    the time of routine vaccination through the Expanded Programme on Immunization (EPI).
+    Strong recommendation, high-quality evidence"""
 
+    test_chunks = [
+        {"text": test_context, "page": 31, "section": "prevention_infants"}
+    ]
+
+    test_query = "When and how should intermittent preventive treatment be administered to infants?"
+    
+    test_query = "What is the recommended preventive treatment for malaria during pregnancy?"
     res = generate_answer(test_query, test_context, test_chunks)
     print(json.dumps(res, indent=2))

@@ -46,6 +46,14 @@ def handle_query(request: QueryRequest):
 
     try:
         result = run_rag_pipeline(request.question)
+
+        # Extract answer from guardrail metrics if recommendation is empty
+        guardrail_metrics = result.get("guardrail_metrics", {})
+        fallback_answer = guardrail_metrics.get("answer")
+
+        if not result.get("recommendation") and fallback_answer:
+            result["recommendation"] = fallback_answer
+
         return result
     except Exception as e:
         # Print actual error in server logs before raising
