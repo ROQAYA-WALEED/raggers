@@ -1,0 +1,122 @@
+[
+  {
+    "Question": "What is the recommended target dose of parenteral artesunate for children weighing under 20 kg with severe malaria?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the core diagnostic criteria and insulin protocol for managing Type 1 Diabetes in pediatrics?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "Which five artemisinin-based combination therapies (ACTs) are recommended for treating uncomplicated P. falciparum?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "How should acute severe asthma exacerbations be treated in emergency department settings?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "What is the recommended dosage of single-dose primaquine as a P. falciparum gametocytocide in low-transmission areas?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the first-line antiretroviral regimens for treatment-naive adult HIV patients according to WHO?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "How should uncomplicated P. falciparum malaria be treated in pregnant women during their first trimester?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What is the surgical management protocol for acute appendicitis in adult patients?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "What is the duration of treatment required for the artemisinin component in ACT regimens?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the diagnostic criteria and antibiotic therapies for acute bacterial pneumonia?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "How is pre-referral treatment managed in young children under 6 years with suspected severe malaria when IM injections are unavailable?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What is the recommended dosage schedule for the routine DTP-HepB-Hib childhood immunization?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "What is the recommended primaquine regimen to prevent relapse in P. vivax or P. ovale malaria for G6PD-normal patients?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the primary clinical features and fluid resuscitation guidelines for Dengue Hemorrhagic Fever?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "How should intermittent preventive treatment in pregnancy (IPTp) with sulfadoxine-pyrimethamine be administered in endemic areas?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What is the recommended drug combination for short-course treatment of pulmonary tuberculosis?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "What dose of dihydroartemisinin and piperaquine should be given to children weighing less than 25 kg?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "How should hypertension be managed using ACE inhibitors and calcium channel blockers?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "Why should high doses of folic acid (5 mg daily) be avoided when treating malaria with artesunate + SP?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the staging guidelines and chemotherapy options for stage III colon cancer?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "How should recurring malaria parasitaemia occurring within 28 days of initial treatment be managed?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the standard diagnostic procedures for confirming acute viral hepatitis B infection?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "What is the definition of hyperparasitaemia and its clinical significance in Plasmodium falciparum malaria?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the primary dietary guidelines for managing chronic renal failure in non-dialysis patients?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "What antimalarial treatments should be given to patients co-infected with HIV who are taking efavirenz or zidovudine?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What is the protocol for administering emergency CPR in adults experiencing cardiac arrest?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "What is the recommended alternative parentral treatment for severe malaria if IV artesunate is unavailable?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "How is acute gastroenteritis with moderate dehydration treated using oral rehydration salts?",
+    "Relevant": "false"
+  },
+  {
+    "Question": "How does rifampicin interaction affect the bioavailability of quinine and artemether + lumefantrine?",
+    "Relevant": "true"
+  },
+  {
+    "Question": "What are the first-line treatment options for iron deficiency anemia in pediatric patients?",
+    "Relevant": "false"
+  }
+]

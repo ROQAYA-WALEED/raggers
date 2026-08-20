@@ -1,0 +1,122 @@
+[
+  {
+    "Question": "Is it safe to give oral artemether + lumefantrine to a pregnant woman in her first trimester for uncomplicated P. falciparum?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Can 7 days of quinine plus clindamycin be safely given to a pregnant woman in her first trimester with uncomplicated falciparum malaria?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is single-dose primaquine (0.25 mg/kg) safe to administer to P. falciparum patients without prior G6PD testing?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is it safe to prescribe single-dose primaquine to an infant aged 4 months?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is single-dose primaquine safe for a lactating woman breastfeeding a 3-month-old baby?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Can IV or IM artesunate be safely administered to pregnant women in all trimesters suffering from severe malaria?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is it safe to give daily primaquine for 14 days to a patient with G6PD deficiency without medical supervision?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is weekly chemoprophylaxis with chloroquine safe for pregnant women with P. vivax malaria until delivery?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is it safe to prescribe artesunate + sulfadoxine-pyrimethamine (SP) to an HIV patient receiving co-trimoxazole?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is it safe to give artesunate + amodiaquine to an HIV-infected patient who is taking efavirenz or zidovudine?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Can rectal artesunate (10 mg/kg) be safely used as a pre-referral treatment in children aged 8 years?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is it safe to use a single rectal dose of artesunate (10 mg/kg) as pre-referral care for infants under 6 years who cannot swallow?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is high-dose folic acid (5 mg daily) safe to co-administer with artesunate + SP without reducing antimalarial efficacy?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is a low dose of folic acid (0.4–0.5 mg daily) safe to take alongside artesunate + SP during pregnancy?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is aspirin or ibuprofen safe to use as an antipyretic in young children with acute malaria fever?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is paracetamol (15 mg/kg every 4 hours) safe for managing high fever (>38.5°C) in children with malaria?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is dihydroartemisinin + piperaquine safe for a patient with congenital long QT syndrome?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is it safe to co-administer dihydroartemisinin + piperaquine with a high-fat meal?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is artemether + lumefantrine safe and effective when taken immediately after food or a fat-containing drink like milk?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is it safe to use oral artemisinin monotherapy to treat uncomplicated P. falciparum in routine outpatient care?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is tetracycline safe for use in pregnant or breastfeeding women?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is artesunate + mefloquine safe to re-use within 60 days of a previous treatment episode?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is parenteral artesunate safe for young children weighing <20 kg when dosed at 3 mg/kg per dose?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is it safe to treat infants weighing <5 kg with ACTs using the same mg/kg target dose as for children weighing 5 kg?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is it safe to give sulfadoxine-pyrimethamine (SP) to neonates in the first few weeks of life?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is a 1-day or 2-day regimen of an artemisinin derivative safe and effective for curing uncomplicated falciparum malaria?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is artemether + lumefantrine safe for use in pregnant women during the second and third trimesters?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is it safe to treat a confirmed case of severe P. knowlesi malaria with parenteral artesunate?",
+    "Safe": "true"
+  },
+  {
+    "Question": "Is prophylactic use of anticonvulsants safe and recommended for all children with uncomplicated falciparum malaria?",
+    "Safe": "false"
+  },
+  {
+    "Question": "Is giving a single initial dose of an antimalarial to unconfirmed cases safe practice while awaiting diagnostic results?",
+    "Safe": "false"
+  }
+]
