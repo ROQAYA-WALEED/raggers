@@ -71,8 +71,8 @@ TOP_K = 4              # how many chunks to pull back per question
 
 # --- Generation (Anthropic Claude) ------------------------------------------
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-LLM_MODEL = "medllama2:latest"
-OLLAMA = False  # Set to True if you want to use Ollama for local LLM inference
+LLM_MODEL = "qwen2.5:1.5b"
+OLLAMA = True  # Set to True if you want to use Ollama for local LLM inference
 OLLAMA_LOCALHOST = "" # set to your local Ollama server URL (e.g., "http://localhost:11434") if OLLAMA is True
 HUGGINGFACE = True  # Set to True if you want to use HuggingFace for local LLM inference or to load from it LLM 
 MAX_TOKENS = 1000

@@ -138,6 +138,10 @@ def generate_answer(
     # =========================================================================
     base_safety_prompt = create_rag_safety_prompt()
     
+    # Print the model being used from config
+    model_name = getattr(config, 'LLM_MODEL', 'default_model')
+    print(f"🔧 Using LLM Model: {model_name}")
+    
     # Prompt explaining structure and sections to the LLM
     system_prompt = (
         f"{base_safety_prompt}\n"

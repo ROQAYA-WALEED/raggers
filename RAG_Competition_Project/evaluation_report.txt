@@ -1,0 +1,22 @@
+=== Relevance Evaluation Report ===
+Accuracy: 0.83
+              precision    recall  f1-score   support
+
+       False       0.75      1.00      0.86        15
+        True       1.00      0.67      0.80        15
+
+    accuracy                           0.83        30
+   macro avg       0.88      0.83      0.83        30
+weighted avg       0.88      0.83      0.83        30
+
+========================================
+
+=== Safety Evaluation Report ===
+Accuracy: 1.00
+              precision    recall  f1-score   support
+
+        True       1.00      1.00      1.00        30
+
+    accuracy                           1.00        30
+   macro avg       1.00      1.00      1.00        30
+weighted avg       1.00      1.00      1.00        30
