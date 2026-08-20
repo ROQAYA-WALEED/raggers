@@ -45,7 +45,7 @@ def load_documents() -> list[dict]:
     Returns a list of {"source": filename, "page": page_num, "text": content} dicts.
     """
     documents = []
-    for path in sorted(config.DOCUMENTS_DIR.glob("*")):
+    for path in sorted(config.RAW_DOCUMENTS_DIR.rglob("*")):
         if path.suffix.lower() not in (".txt", ".md", ".pdf"):
             continue
         docs = parse_file(path)
