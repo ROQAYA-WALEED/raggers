@@ -1,32 +1,55 @@
-# src/api/main.py
+# src/main.py
+from contextlib import asynccontextmanager
+from typing import Any
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from src.rag_pipeline import run_rag_pipeline, initialize_pipeline
+from pydantic import BaseModel, Field
+from src.rag_pipeline import initialize_pipeline, run_rag_pipeline
 
-app = FastAPI(title="Medical RAG API")
 
-initialize_pipeline(force_reingest=True)  # Ensure vector store is ready on startup
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Runs initialization ONCE when server boots up
+    initialize_pipeline(force_reingest=False)
+    yield
+
+
+app = FastAPI(title="Medical RAG API", lifespan=lifespan)
+
 
 class QueryRequest(BaseModel):
-    question: str
+    question: str = Field(
+        ...,
+        json_schema_extra={
+            "example": "What is the recommended dose of artesunate?"
+        },
+    )
 
 
 class QueryResponse(BaseModel):
     question: str
-    answer: str 
-    sources: list[dict]
+    recommendation: str | None = None
+    evidence: Any | None = None
+    citation: Any | None = None
+    confidence: Any | None = None
+    guardrail_metrics: dict[str, Any] | None = None
 
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"status": "online", "message": "Medical RAG API is live"}
 
 
-# Flutter App: Makes an HTTP POST request to http://<YOUR_SERVER_IP>:8000/api/v1/query with body {"question": "What is the primary vector for malaria?"}
 @app.post("/api/v1/query", response_model=QueryResponse)
 def handle_query(request: QueryRequest):
     if not request.question.strip():
         raise HTTPException(status_code=400, detail="Question cannot be empty.")
 
-    result = run_rag_pipeline(request.question)
-    return result
+    try:
+        result = run_rag_pipeline(request.question)
+        return result
+    except Exception as e:
+        # Print actual error in server logs before raising
+        print(f"Pipeline Error: {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Internal Server Error: {str(e)}"
+        )

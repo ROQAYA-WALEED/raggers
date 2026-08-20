@@ -1,4 +1,5 @@
 # src/rag_pipeline.py
+import json
 import logging
 from src import config
 from src.generation.generator import generate_answer
@@ -34,8 +35,8 @@ def run_rag_pipeline(
         dict: Structured response containing LLM answer and guardrail metrics.
     """
     # 1. Optionally run ingestion to ensure database & embeddings are live
-    # if reingest_first:
-    #     run_ingestion()
+    if reingest_first:
+        run_ingestion()
 
     # 2. Retrieve context filtered by similarity threshold
     threshold = getattr(config, "RELEVANCE_THRESHOLD", 0.60)
@@ -50,16 +51,22 @@ def run_rag_pipeline(
     output = generate_answer(
         question=question, context=context_str, evidence_chunks=evidence_chunks
     )
+    print(f"Raw output from generate_answer: {json.dumps(output, indent=2)}")
 
     llm_response = output[0]["LLM response"]
     guardrail_metrics = output[1]["Guardrail metrics"]
 
+    # 4. Extract fields with case-insensitive fallbacks to handle schema variations
     return {
         "question": question,
-        "recommendation": llm_response.get("Recomendation"),
-        "evidence": llm_response.get("Evidence"),
-        "citation": llm_response.get("Citation"),
-        "confidence": llm_response.get("Confidence"),
+        "recommendation": llm_response.get(
+            "recommendation", llm_response.get("Recomendation")
+        ),
+        "evidence": llm_response.get("evidence", llm_response.get("Evidence")),
+        "citation": llm_response.get("citation", llm_response.get("Citation")),
+        "confidence": llm_response.get(
+            "confidence", llm_response.get("Confidence")
+        ),
         "guardrail_metrics": guardrail_metrics,
     }
 
@@ -68,9 +75,7 @@ if __name__ == "__main__":
     # Ensure vector store is ingested before testing query execution
     initialize_pipeline(force_reingest=True)
 
-    sample_query = "What is the recommended target dose of parenteral artesunate for children?"
+    sample_query = "how to treat malaria?"
     result = run_rag_pipeline(sample_query)
-
-    import json
 
     print(json.dumps(result, indent=2))
