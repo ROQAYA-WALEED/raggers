@@ -1,0 +1,10 @@
+llama-index==0.14.23
+fastembed==0.8.0
+chromadb==1.5.9
+fastapi==0.141.1
+uvicorn==0.52.3
+streamlit==1.61.1
+pydantic==2.13.4
+python-dotenv==1.2.3
+pypdf==6.16.1
+ranx==0.3.21

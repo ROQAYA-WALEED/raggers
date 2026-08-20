@@ -10,7 +10,6 @@ class Reranker:
             return []
         pairs = [(query, cand["text"]) for cand in candidates]
         scores = self.model.predict(pairs)
-        # Sort by score descending
         scored = list(zip(candidates, scores))
         scored.sort(key=lambda x: x[1], reverse=True)
         top = scored[:top_k]

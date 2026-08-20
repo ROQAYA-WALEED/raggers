@@ -1,4 +1,5 @@
-import openai  # or use a local model via Ollama
+import os
+import openai
 from typing import List, Dict, Any
 import yaml
 
@@ -8,20 +9,16 @@ class StrictGenerator:
             config = yaml.safe_load(f)
         self.llm_model = config.get('llm_model', 'gpt-3.5-turbo')
         self.temperature = config.get('temperature', 0.0)
-        # If using OpenAI, set API key; for local, use Ollama or similar.
         self.client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
     def generate(self, query: str, retrieved_docs: List[Dict[str, Any]]) -> str:
-        # Build context from retrieved documents
         context = ""
         for i, doc in enumerate(retrieved_docs):
-            # doc contains "text", "metadata" (with header info), "rerank_score"
             metadata = doc.get("metadata", {})
             section = metadata.get("Header1", "N/A") or metadata.get("Header2", "N/A") or "N/A"
-            page = metadata.get("page", "unknown")  # you need to extract page from PDF parsing; you can add that during chunking
+            page = metadata.get("page", "unknown")
             context += f"Document {i+1}:\n{doc['text']}\n[Section: {section} | Page: {page}]\n\n"
 
-        # Build the strict system prompt
         system_prompt = """You are a grounded AI assistant. Your sole purpose is to answer questions based **exclusively** on the provided document(s). You have no external knowledge, training data, or general world knowledge beyond the text given to you in this session.
 
 STRICT RULES (ZERO EXCEPTIONS):
@@ -39,7 +36,6 @@ STRICT RULES (ZERO EXCEPTIONS):
 
         user_message = f"Context from documents:\n{context}\n\nUser question: {query}"
 
-        # Call LLM
         response = self.client.chat.completions.create(
             model=self.llm_model,
             messages=[

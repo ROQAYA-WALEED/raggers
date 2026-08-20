@@ -2,7 +2,6 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from sentence_transformers import SentenceTransformer
 from llama_index.core.embeddings import BaseEmbedding
 from typing import List
-import asyncio
 
 class ZEmbedEmbedding(BaseEmbedding):
     def __init__(self, model_name: str = "zeroentropy/zembed-1", **kwargs):
@@ -11,7 +10,7 @@ class ZEmbedEmbedding(BaseEmbedding):
             model_name,
             trust_remote_code=True,
             model_kwargs={"torch_dtype": "float32"},
-            device="cpu"  # or "cuda" if available
+            device="cpu"  # or "cuda"
         )
         self._embedding_dim = 2560
 

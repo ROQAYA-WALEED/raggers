@@ -1,12 +1,11 @@
-# config.yaml
-pdf_path: r"C:\Users\dell\OneDrive\Desktop\c++ folder\Ai hacathon creativa\raggers\assests\documents\book800.pdf"
-markdown_path: r"C:\Users\dell\OneDrive\Desktop\c++ folder\Ai hacathon creativa\raggers\assests\documents\book800.pdf"
-chunk_size: 400
-chunk_overlap: 80
-embedding_model_dense: "BAAI/bge-small-en-v1.5"   # or "sentence-transformers/all-MiniLM-L6-v2"
-embedding_model_reranker: "cross-encoder/ms-marco-MiniLM-L-6-v2"  # for reranking
+pdf_path: "raggers/assets/documents/malaria_book.pdf"
+markdown_path: "raggers/assets/documents/malaria_book.md"
+chunk_size: 500
+chunk_overlap: 100
+embedding_model_dense: "BAAI/bge-large-en-v1.5"
+embedding_model_reranker: "cross-encoder/ms-marco-MiniLM-L-12-v2"
 collection_name: "oncology_handbook"
-top_k_retrieve: 10          # initial candidates from hybrid search
-top_k_rerank: 3             # final candidates after reranking
-llm_model: "gpt-3.5-turbo"  # or use local model via Ollama
-temperature: 0.0            # deterministic for grounded answers
+top_k_retrieve: 20
+top_k_rerank: 3
+llm_model: "gpt-3.5-turbo"
+temperature: 0.0

@@ -1,13 +1,17 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 class QueryRequest(BaseModel):
     query: str
-    top_k: Optional[int] = 5
+    top_k: int = 3
 
-class DocumentResult(BaseModel):
+class SourceInfo(BaseModel):
+    id: str
     text: str
+    metadata: Dict[str, Any]
     score: float
+    rerank_score: Optional[float] = None
 
 class QueryResponse(BaseModel):
-    results: List[DocumentResult]
+    answer: str
+    sources: List[SourceInfo]

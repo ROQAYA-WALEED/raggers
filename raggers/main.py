@@ -1,6 +1,8 @@
 import argparse
-from ingestion.ingest import run_ingestion
 import uvicorn
+from fastapi import FastAPI
+from .ingestion.ingest import run_ingestion
+from .api.routes import router
 
 def main():
     parser = argparse.ArgumentParser()
@@ -11,8 +13,6 @@ def main():
     if args.ingest:
         run_ingestion()
     elif args.api:
-        from api.routes import router
-        from fastapi import FastAPI
         app = FastAPI()
         app.include_router(router)
         uvicorn.run(app, host="0.0.0.0", port=8000)

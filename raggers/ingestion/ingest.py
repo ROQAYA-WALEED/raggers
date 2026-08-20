@@ -1,38 +1,62 @@
-from .parser import parse_pdf_to_markdown
-from .chunker import chunk_markdown
-from embeddings.embedder import get_embedding_model
-from vectorstore.chroma.chroma_store import ChromaStore
 import yaml
+import pickle
+import os
+from .parser import parse_pdf_to_pages
+from .chunker import chunk_pages
+from ..embeddings.embedder import get_embedding_model
+from ..vectorstore.chroma.chroma_store import ChromaStore
 
-def run_ingestion(config_path: str = "config.yaml"):
+def get_project_root():
+    # This file is at .../raggers/ingestion/ingest.py
+    return os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+
+def run_ingestion(config_path: str = r"C:\Users\dell\OneDrive\Desktop\c++ folder\Ai hacathon creativa\raggers\config.yaml"):
+    project_root = get_project_root()
+    
+    # Resolve config path
+    if not os.path.isabs(config_path):
+        config_path = os.path.join(project_root, config_path)
+    
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
 
-    # 1. Parse PDF to markdown
-    markdown = parse_pdf_to_markdown(config['pdf_path'])
-    with open(config['markdown_path'], 'w', encoding='utf-8') as f:
-        f.write(markdown)
+    # Ensure assets directory exists
+    assets_dir = os.path.join(project_root, "assets")
+    os.makedirs(assets_dir, exist_ok=True)
 
-    # 2. Chunk
-    nodes = chunk_markdown(markdown, config['chunk_size'], config['chunk_overlap'])
+    # Resolve input/output paths
+    pdf_path = os.path.join(project_root, config['pdf_path'])
+    markdown_path = os.path.join(project_root, config['markdown_path'])
 
-    # 3. Embed
+    print("📄 Parsing PDF page by page...")
+    pages = parse_pdf_to_pages(pdf_path)
+
+    print("✂️  Chunking per page (with header detection)...")
+    nodes = chunk_pages(pages, config['chunk_size'], config['chunk_overlap'])
+
+    print("🧠 Generating Embeddings...")
     embed_model = get_embedding_model(config['embedding_model_dense'])
-    # Also need to collect texts for BM25 (sparse) and store in Chroma
     texts = [node.text for node in nodes]
     metadatas = [node.metadata for node in nodes]
     ids = [f"doc_{i}" for i in range(len(nodes))]
 
-    # 4. Store in Chroma
-    chroma = ChromaStore(collection_name=config['collection_name'])
-    # Get dense embeddings (batch)
+    print("💾 Storing in Chroma...")
+    chroma = ChromaStore(
+        collection_name=config['collection_name'],
+        persist_directory=os.path.join(project_root, "chroma_db")
+    )
     embeddings = embed_model._get_text_embeddings(texts)
     chroma.add_documents(ids=ids, documents=texts, embeddings=embeddings, metadatas=metadatas)
 
-    # 5. Also store for BM25 (we need a separate index for sparse search)
-    # We'll save texts and IDs for BM25 retrieval later
-    import pickle
-    with open("assets/bm25_data.pkl", "wb") as f:
+    print("📚 Saving BM25 data...")
+    bm25_path = os.path.join(project_root, "assets", "bm25_data.pkl")
+    with open(bm25_path, "wb") as f:
         pickle.dump({"ids": ids, "texts": texts}, f)
 
-    print(f"Ingested {len(nodes)} chunks into Chroma and BM25 store.")
+    # Also save markdown for reference (optional)
+    with open(markdown_path, 'w', encoding='utf-8') as f:
+        # Concatenate all pages (without page markers)
+        full_markdown = "\n\n".join([text for _, text in pages])
+        f.write(full_markdown)
+
+    print(f"✅ Ingestion complete! {len(nodes)} chunks ingested.")
