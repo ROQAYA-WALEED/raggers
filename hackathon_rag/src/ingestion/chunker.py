@@ -4,6 +4,9 @@ chunker.py
 Splits long document text into smaller overlapping chunks using LlamaIndex
 node parsers and preserves metadata like source and page numbers.
 """
+import uuid
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import MarkdownHeaderTextSplitter
 
 from llama_index.core.node_parser import (
     MarkdownNodeParser,
@@ -46,25 +49,60 @@ def chunk_markdown(text: str) -> list[str]:
 def chunk_documents(
     documents: list[dict], is_markdown: bool = False
 ) -> list[dict]:
-    """
-    Takes document dicts {"source": ..., "text": ..., "page": ...} and returns a flat list
-    of chunk dicts including 'source' and 'page' in each chunk.
-    """
-    all_chunks = []
+    # 1. Base recursive character splitter (enforces character-level CHUNK_SIZE)
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=config.CHUNK_SIZE,  # Ensures chunks <= 200
+        chunk_overlap=config.CHUNK_OVERLAP,
+        length_function=len,
+        separators=["\n\n", "\n", ". ", " ", ""],
+    )
+
+    chunks = []
+    chunk_counter = 0
+
     for doc in documents:
+        text = doc.get("text", "")
+        page = doc.get("page", 1)
+        source = doc.get("source", "")
+
+        # 2. Handle Markdown headers first, then pass through character splitter
         if is_markdown:
-            pieces = chunk_markdown(doc["text"])
+            headers_to_split_on = [
+                ("#", "Header 1"),
+                ("##", "Header 2"),
+                ("###", "Header 3"),
+            ]
+            markdown_splitter = MarkdownHeaderTextSplitter(
+                headers_to_split_on=headers_to_split_on
+            )
+            # Split into header sections
+            header_splits = markdown_splitter.split_text(text)
+
+            # Enforce CHUNK_SIZE on each header section
+            for header_split in header_splits:
+                sub_splits = text_splitter.split_text(header_split.page_content)
+                for sub_text in sub_splits:
+                    chunk_counter += 1
+                    chunks.append(
+                        {
+                            "id": f"{source}_p{page}_c{chunk_counter}",
+                            "text": sub_text,
+                            "page": page,
+                            "source": source,
+                        }
+                    )
         else:
-            pieces = chunk_text(doc["text"])
+            # Direct recursive splitting for raw text / PDFs
+            splits = text_splitter.split_text(text)
+            for sub_text in splits:
+                chunk_counter += 1
+                chunks.append(
+                    {
+                        "id": f"{source}_p{page}_c{chunk_counter}",
+                        "text": sub_text,
+                        "page": page,
+                        "source": source,
+                    }
+                )
 
-        source = doc.get("source", "unknown")
-        page = doc.get("page", None)
-
-        for i, piece in enumerate(pieces):
-            all_chunks.append({
-                "id": f"{source}::page_{page}::chunk_{i}" if page else f"{source}::chunk_{i}",
-                "source": source,
-                "page": page,
-                "text": piece,
-            })
-    return all_chunks
+    return chunks
