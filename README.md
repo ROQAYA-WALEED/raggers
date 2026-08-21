@@ -1,84 +1,224 @@
-Here is a complete, production-ready `README.md` for your Medical RAG project, incorporating all your exact model details, port cleanup commands, and FastAPI execution steps.
-
-```markdown
 # Clinical RAG Assistant with Safety Guardrails
 
-A clinical Retrieval-Augmented Generation (RAG) microservice designed to deliver faithful, context-anchored medical recommendations while enforcing multi-layer safety guardrails.
+## Demo
 
-## Core Models
-* **Embedding Model:** `BAAI/bge-base-en-v1.5`
-* **LLM Engine:** `qwen2.5:1.5b` (via Ollama)
+[Watch the Demo Video](https://github.com/user-attachments/assets/182b43f6-6c8c-4333-a752-5d73eb245654)
+
+---
+
+## Project Overview
+
+Clinical guidelines are often dense and difficult to navigate. Traditional LLM-based systems may hallucinate or provide unverified medical information when answering clinical questions.
+
+**Clinical RAG Assistant** is a strictly bounded **Retrieval-Augmented Generation (RAG)** microservice developed for the **AI Clinical Decision Support Lite Hackathon**.
+
+The system is designed to provide **faithful, context-grounded medical recommendations** while enforcing multiple layers of safety and verification.
+
+---
+
+## Architecture & Technologies
+
+| Component                | Technology                |
+| ------------------------ | ------------------------- |
+| Language & Orchestration | Python, LangChain         |
+| Vector Database          | ChromaDB                  |
+| Backend & API            | FastAPI                   |
+| Retrieval Evaluation     | ranx                      |
+| Frontend                 | Flutter                   |
+| Embedding Model          | `BAAI/bge-base-en-v1.5`   |
+| LLM                      | `qwen2.5:1.5b` via Ollama |
 
 ---
 
 ## Key Features
-* **Strict Context Verification:** Evaluates claim faithfulness using hybrid lexical overlap metrics.
-* **Two-Layer Safety System:** 
-  * **Layer 1:** Input Keyword Filtering for unauthorized or unsafe medical requests.
-  * **Layer 2:** Output Guardrail verifying claim support and citation alignment against retrieved sources.
-* **Structured JSON API:** Delivers recommendations, evidence, page citations, confidence ratings, and guardrail metrics.
-* **Flutter Integration:** Simple REST API endpoints ready for mobile and web frontends.
+
+### 1. Strict Context Verification
+
+The system evaluates whether generated claims are actually supported by the retrieved medical evidence using **hybrid lexical overlap metrics**.
+
+### 2. Two-Layer Safety System
+
+#### Layer 1 — Input Safety Filter
+
+Filters unauthorized or unsafe medical requests before they reach the generation stage.
+
+#### Layer 2 — Output Safety Guardrail
+
+Verifies the generated answer against the retrieved sources, checking both **claim support** and **citation alignment**.
+
+### 3. Refusal Logic
+
+When the retrieved context does not provide sufficient evidence, the system automatically refuses to generate an unsupported answer instead of guessing.
+
+### 4. Mandatory Citations
+
+Every generated recommendation is required to include its source information, including:
+
+* Document Name
+* Section
+* Page Number
+
+### 5. Dynamic Context Expansion
+
+When a retrieved chunk contains only part of the required information, the system traces the chunk back to its original medical section and expands the context window.
+
+This allows the LLM to receive the **full clinical context** instead of relying on an incomplete text fragment.
+
+### 6. Structured JSON API
+
+The API returns structured information including:
+
+* Recommendation
+* Evidence
+* Citation
+* Confidence Level
+* Faithfulness Score
+* Citation Accuracy
+* Guardrail Status
+
+### 7. Flutter Integration
+
+The backend exposes REST API endpoints that can be integrated with both mobile and web applications.
 
 ---
 
-## Setup & Running the API
+## Project Structure
 
-### 1. Prerequisites
-Ensure you have Python 3.10+ installed and Ollama running with the local LLM model:
-```bash
-ollama pull qwen2.5:1.5b
-
+```text
+main_rag_architecture/
+│
+├── src/
+│   ├── main.py
+│   ├── config.py
+│   ├── generator.py
+│   └── ...
+│
+├── raggers_flutter_app/
+│
+├── requirements.txt
+└── README.md
 ```
 
-### 2. Installation
+---
 
-Clone the repository and install dependencies:
+# Setup & Running
+
+## Prerequisites
+
+Make sure you have:
+
+* Python 3.10+
+* Ollama
+* Flutter SDK
+
+Pull the required local LLM:
+
+```bash
+ollama pull qwen2.5:1.5b
+```
+
+---
+
+## Backend Installation
+
+Clone the repository:
 
 ```bash
 git clone <your-repo-url>
-cd hackathon_rag
+cd main_rag_architecture
+```
+
+Install the required Python packages:
+
+```bash
 pip install -r requirements.txt
-
-```
-
-### 3. Clear Port & Launch FastAPI
-
-Make sure to kill the port you want to use 1st:
-
-```bash
-lsof -ti :8001 | xargs kill -9
-
-```
-
-This is how you run the fastapi:
-
-```bash
-export PYTHONPATH=$PWD
-python -m uvicorn src.main:app --reload --port 8001
-
 ```
 
 ---
 
-## API Endpoints & Testing
+## Run the FastAPI Backend
 
-### Interactive Documentation (Swagger UI)
+Make sure port `8001` is available.
 
-Once running, open your browser to test endpoints interactively:
+### Linux / macOS
 
-* **Swagger UI:** `http://127.0.0.1:8001/docs`
-* **ReDoc:** `http://127.0.0.1:8001/redoc`
+```bash
+lsof -ti :8001 | xargs kill -9
+```
 
-### Example Request (`POST /api/v1/query`)
+Set the Python path:
+
+```bash
+export PYTHONPATH=$PWD
+```
+
+Start the FastAPI server:
+
+```bash
+python -m uvicorn src.main:app --reload --port 8001
+```
+
+The API will be available at:
+
+```text
+http://127.0.0.1:8001
+```
+
+---
+
+# Flutter App Integration
+
+Set the API base URL according to your target platform.
+
+| Platform              | Base URL                                   |
+| --------------------- | ------------------------------------------ |
+| iOS Simulator / macOS | `http://127.0.0.1:8001/api/v1/query`       |
+| Android Emulator      | `http://10.0.2.2:8001/api/v1/query`        |
+| Physical Device       | `http://<YOUR_LOCAL_IP>:8001/api/v1/query` |
+
+### Run the Flutter Application
+
+Open a new terminal:
+
+```bash
+cd raggers_flutter_app
+flutter pub get
+flutter run
+```
+
+---
+
+# API Documentation
+
+Once the FastAPI server is running, interactive API documentation is available at:
+
+### Swagger UI
+
+```text
+http://127.0.0.1:8001/docs
+```
+
+### ReDoc
+
+```text
+http://127.0.0.1:8001/redoc
+```
+
+---
+
+# API Usage
+
+## POST `/api/v1/query`
+
+### Request
 
 ```json
 {
   "question": "What is the recommended dose of artesunate?"
 }
-
 ```
 
-### Example Response
+### Response
 
 ```json
 {
@@ -96,19 +236,52 @@ Once running, open your browser to test endpoints interactively:
     "reason": null
   }
 }
-
 ```
 
 ---
 
-## Flutter Integration
+# Safety & Reliability
 
-Set the base URL in your Flutter app's HTTP service according to your target platform:
+The system follows a **bounded RAG approach**:
 
-* **iOS Simulator / macOS:** `http://127.0.0.1:8001/api/v1/query`
-* **Android Emulator:** `http://10.0.2.2:8001/api/v1/query`
-* **Physical Device (Wi-Fi):** `http://<YOUR_LOCAL_IP>:8001/api/v1/query`
-
+```text
+User Question
+      ↓
+Input Safety Filter
+      ↓
+Medical Retrieval
+      ↓
+Dynamic Context Expansion
+      ↓
+LLM Generation
+      ↓
+Output Guardrail
+      ↓
+Faithfulness & Citation Verification
+      ↓
+Final Response / Safe Refusal
 ```
 
-```
+The core principle is:
+
+> **If the evidence does not support the answer, the system should not guess.**
+
+---
+
+## Why This Approach?
+
+Instead of allowing the LLM to rely on its internal knowledge, the system constrains generation to the retrieved medical evidence and verifies the generated response before returning it to the user.
+
+This helps reduce:
+
+* Medical hallucinations
+* Unsupported recommendations
+* Incorrect citations
+* Overconfident responses
+* Answers generated without sufficient evidence
+
+---
+
+## License
+
+This project was developed as part of the **AI Clinical Decision Support Lite Hackathon**.
