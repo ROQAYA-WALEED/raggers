@@ -84,22 +84,40 @@ The backend exposes REST API endpoints that can be integrated with both mobile a
 
 ## Project Structure
 
+
+بالآتي:
+
+:::writing{variant="document" id="38147"}
+# Project Architecture
+
 ```text
 main_rag_architecture/
-│
 ├── src/
-│   ├── main.py
+│   ├── api/                 # FastAPI routes & request/response schemas
+│   ├── assets/
+│   │   └── documents/       # Medical source documents
+│   ├── generation/          # LLM response generation & safety guardrails
+│   │   ├── generator.py
+│   │   └── rag_metrics.py
+│   ├── ingestion/           # Document parsing & chunking
+│   │   ├── chunker.py
+│   │   ├── ingest.py
+│   │   └── parser.py
+│   ├── retrieval/           # Context retrieval logic
+│   │   └── retriever.py
+│   ├── vectorstore/         # ChromaDB vector store
+│   │   ├── chroma/
+│   │   └── vector_store.py
+│   ├── app.py
 │   ├── config.py
-│   ├── generator.py
-│   └── ...
+│   ├── embedder.py
+│   └── main.py
 │
-├── raggers_flutter_app/
-│
-├── requirements.txt
-└── README.md
+├── raggers_flutter_app/     # Flutter mobile application
+├── .gitignore
+├── README.md
+└── requirements.txt
 ```
-
----
 
 # Setup & Running
 
@@ -124,7 +142,7 @@ ollama pull qwen2.5:1.5b
 Clone the repository:
 
 ```bash
-git clone <your-repo-url>
+git clone <https://github.com/ROQAYA-WALEED/raggers/>
 cd main_rag_architecture
 ```
 
